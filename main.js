@@ -45,7 +45,40 @@ Vue.component("product", {
       </div>
     </div>
 
-    <product-review></product-review>
+    <div class="w-full mt-8 p-4">
+      <ul class="flex border-b">
+        <li class="mr-1">
+          <a class="bg-white inline-block py-2 px-4 
+                    text-blue-500 hover:text-blue-800 font-semibold" 
+             href="#" 
+             @click="showReviews = true"
+             :class="{'text-blue-800': showReviews}"
+          >
+            Reviews
+          </a>
+        </li>
+        <li class="mr-1">
+          <a class="bg-white inline-block py-2 px-4 
+                    text-blue-500 hover:text-blue-800 font-semibold" 
+             href="#" 
+             @click="showReviews = false"
+             :class="{'text-blue-800': !showReviews}"
+          >
+            Add Review
+          </a>
+        </li>
+      </ul>
+
+      <div class="p-4 w-full h-full">
+        <div v-if="showReviews">
+          <review-list></review-list>
+        </div>
+        <div v-else>
+          <review-form></review-form>
+        </div>
+      </div>
+
+    </div>
   </div>
   `,
   data() {
@@ -67,6 +100,7 @@ Vue.component("product", {
         },
       ],
       displayItem: 0,
+      showReviews: true,
     };
   },
   computed: {
@@ -84,14 +118,12 @@ Vue.component("product", {
   },
 });
 
-// ------------------- Product Review --------------------
-Vue.component("product-review", {
+// ------------------- Review List --------------------
+Vue.component("review-list", {
   template: `
-    <div class="w-full h-full
-                border-t mt-8 p-4
-    ">
+    <div>
       <ul v-for="review in reviews">
-        <li>{{ review.rating }} <i class="fas fa-star"></i> {{ review.review }} ({{ review.name }})</{{></li>
+        <li class="text-sm text-gray-700">{{ review.rating }}<i class="fas fa-star"></i> {{ review.review }} ({{ review.name }})</{{></li>
       </ul>
     </div>
   `,
@@ -106,6 +138,56 @@ Vue.component("product-review", {
       ],
     };
   },
+});
+
+// ------------------- Review Form --------------------
+Vue.component("review-form", {
+  template: `
+    <form class="w-full max-w-sm">
+      
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/3">
+          <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="name">
+            Name
+          </label>
+        </div>
+        <div class="md:w-2/3">
+          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" type="text">
+        </div>
+      </div>
+
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/3">
+          <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="review">
+            Review
+          </label>
+        </div>
+        <div class="md:w-2/3">
+          <textarea class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="review" rows="5"></textarea>
+        </div>
+      </div>
+
+      <div class="md:flex md:items-center mb-6">
+        <div class="md:w-1/3">
+          <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="rating">
+            Rating
+          </label>
+        </div>
+        <div class="md:w-2/3">
+          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="rating" type="num" min="1" max="5">
+        </div>
+      </div>
+
+      <div class="md:flex md:items-center">
+        <div class="md:w-1/3"></div>
+        <div class="md:w-2/3">
+          <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  `,
 });
 
 // ------------------- Cart--------------------
