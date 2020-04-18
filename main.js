@@ -1,14 +1,19 @@
 Vue.component("product", {
   template: `
-  <div class="card flex m-4">
+  <div class="card md:flex m-4">
+
     <img class="card__img w-64 shadow-md" 
          :src="variables[displayItem].img" 
          :class="{'card__img--inactive': !variables[displayItem].hasStock}">
     </img>
-    <div class="card__info p-4">
+
+    <div class="card__info p-4 w-full relative">
+
       <p class="text-2xl">{{ name }}</p>
+
       <p v-if="variables[displayItem].hasStock">In Stock</p>
       <p v-else>Out of Stock</p>
+
       <div class="flex">
         <div v-for="(color, index) in colors" 
              :style="{ backgroundColor: color }"
@@ -16,6 +21,19 @@ Vue.component("product", {
              @mouseover="changeItem(index)">
         </div>
       </div>
+
+      <button class="bg-blue-500 hover:bg-blue-700
+                    text-white font-bold
+                    py-2 px-4
+                    rounded-full
+                    absolute bottom-0"
+              @click="addToCart"
+              :disabled="!variables[displayItem].hasStock"
+              :class="{'button--disabled': !variables[displayItem].hasStock}"
+      >
+        Add to Cart
+      </button>
+
     </div>
   </div>
   `,
@@ -47,6 +65,9 @@ Vue.component("product", {
   methods: {
     changeItem(index) {
       this.displayItem = index;
+    },
+    addToCart() {
+      console.log("added to cart");
     },
   },
 });
