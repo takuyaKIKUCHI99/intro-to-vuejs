@@ -10,10 +10,16 @@
       href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <!-- Font Awesome CDN -->
+    <script
+      src="https://kit.fontawesome.com/e04326b660.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <div id="app" class="container mx-auto">
-      <product></product>
+    <div id="app" class="container mx-auto flex p-4 justify-between">
+      <product @add-to-cart="updateCart"></product>
+      <cart :cart="cart"></cart>
     </div>
     <!-- Vue.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
