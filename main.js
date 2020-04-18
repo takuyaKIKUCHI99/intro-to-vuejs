@@ -1,18 +1,18 @@
 Vue.component("product", {
   template: `
-  <div class="card">
-    <img class="card__img" 
+  <div class="card flex m-4">
+    <img class="card__img w-64 shadow-md" 
          :src="variables[displayItem].img" 
          :class="{'card__img--inactive': !variables[displayItem].hasStock}">
     </img>
-    <div class="card__info">
-      <h1>{{ name }}</h1>
+    <div class="card__info p-4">
+      <p class="text-2xl">{{ name }}</p>
       <p v-if="variables[displayItem].hasStock">In Stock</p>
       <p v-else>Out of Stock</p>
-      <div class="color-selection">
+      <div class="flex">
         <div v-for="(color, index) in colors" 
              :style="{ backgroundColor: color }"
-             class="color-box"
+             class="w-8 h-8 m-1"
              @mouseover="changeItem(index)">
         </div>
       </div>

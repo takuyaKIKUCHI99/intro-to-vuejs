@@ -1,21 +1,7 @@
 .card {
-  display: flex;
   &__img {
-    box-shadow: 1px 1px 5px rgb(99, 99, 99);
-    height: 20rem;
     &--inactive {
       filter: brightness(0.5);
-    }
-  }
-  &__info {
-    margin-left: 1rem;
-    .color-selection {
-      display: flex;
-      .color-box {
-        width: 2rem;
-        height: 2rem;
-        margin: 5px;
-      }
     }
   }
 }
