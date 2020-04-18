@@ -71,10 +71,10 @@ Vue.component("product", {
 
       <div class="p-4 w-full h-full">
         <div v-if="showReviews">
-          <review-list></review-list>
+          <review-list :reviews="reviews"></review-list>
         </div>
         <div v-else>
-          <review-form></review-form>
+          <review-form @add-review="addReview"></review-form>
         </div>
       </div>
 
@@ -99,6 +99,13 @@ Vue.component("product", {
           color: "#339E68",
         },
       ],
+      reviews: [
+        {
+          name: "TK",
+          review: "This is a sample review",
+          rating: 5,
+        },
+      ],
       displayItem: 0,
       showReviews: true,
     };
@@ -115,29 +122,27 @@ Vue.component("product", {
     addToCart() {
       this.$emit("add-to-cart", this.variables[this.displayItem].color);
     },
+    addReview(review) {
+      this.reviews.push(review);
+      this.showReviews = true;
+    }
   },
 });
 
 // ------------------- Review List --------------------
 Vue.component("review-list", {
+  props: {
+    reviews: {
+      type: Array,
+    }
+  },
   template: `
     <div>
       <ul v-for="review in reviews">
         <li class="text-sm text-gray-700">{{ review.rating }}<i class="fas fa-star"></i> {{ review.review }} ({{ review.name }})</{{></li>
       </ul>
     </div>
-  `,
-  data() {
-    return {
-      reviews: [
-        {
-          name: "TK",
-          review: "This is a sample review",
-          rating: 5,
-        },
-      ],
-    };
-  },
+  `
 });
 
 // ------------------- Review Form --------------------
@@ -152,7 +157,7 @@ Vue.component("review-form", {
           </label>
         </div>
         <div class="md:w-2/3">
-          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" type="text">
+          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" type="text" v-model="review.name">
         </div>
       </div>
 
@@ -163,7 +168,7 @@ Vue.component("review-form", {
           </label>
         </div>
         <div class="md:w-2/3">
-          <textarea class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="review" rows="5"></textarea>
+          <textarea class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="review" rows="5" v-model="review.review"></textarea>
         </div>
       </div>
 
@@ -174,20 +179,34 @@ Vue.component("review-form", {
           </label>
         </div>
         <div class="md:w-2/3">
-          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="rating" type="num" min="1" max="5">
+          <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="rating" type="number" min="1" max="5" v-model="review.rating">
         </div>
       </div>
 
       <div class="md:flex md:items-center">
         <div class="md:w-1/3"></div>
         <div class="md:w-2/3">
-          <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+          <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button" @click="sendReview">
             Submit
           </button>
         </div>
       </div>
     </form>
   `,
+  data() {
+    return {
+      review: {
+        name: "",
+        review: "",
+        rating: 3,
+      },
+    };
+  },
+  methods: {
+    sendReview() {
+      this.$emit("add-review", this.review);
+    }
+  }
 });
 
 // ------------------- Cart--------------------
