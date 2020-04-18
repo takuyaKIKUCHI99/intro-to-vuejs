@@ -1,47 +1,51 @@
+// ------------------- Product --------------------
 Vue.component("product", {
   template: `
-  <div class="card md:flex">
+  <div>
+    <div class="card md:flex">
 
-    <img class="card__img w-64 shadow-md rounded-sm" 
-         :src="variables[displayItem].img" 
-         :class="{'card__img--inactive': !variables[displayItem].hasStock}">
-    </img>
+      <img class="card__img w-64 shadow-md rounded-sm" 
+          :src="variables[displayItem].img" 
+          :class="{'card__img--inactive': !variables[displayItem].hasStock}">
+      </img>
 
-    <div class="card__info p-4 w-full flex flex-col justify-between">
+      <div class="card__info py-4 px-6 w-full flex flex-col justify-between">
 
-      <div class="product-info">
-        <p class="text-2xl">{{ name }}</p>
+        <div class="product-info">
+          <p class="text-2xl">{{ name }}</p>
 
-        <div class="flex">
-          <div v-for="(color, index) in colors" 
-              :style="{ backgroundColor: color }"
-              class="w-8 h-8 m-1"
-              @mouseover="changeItem(index)">
+          <div class="flex">
+            <div v-for="(color, index) in colors" 
+                :style="{ backgroundColor: color }"
+                class="w-8 h-8 m-1"
+                @mouseover="changeItem(index)">
+            </div>
           </div>
+
+          <ul v-for="material in materials">
+            <li class="text-sm">{{ material }}</li>
+          </ul>
+
+        </div>  
+
+        <div class="cart-button">
+          <button class="bg-blue-500 hover:bg-blue-700
+                        text-white font-bold
+                        py-2 px-4
+                        rounded-full
+                        self-end"
+                  @click="addToCart"
+                  :disabled="!variables[displayItem].hasStock"
+                  :class="{'button--disabled': !variables[displayItem].hasStock}"
+          >
+            <span v-if="variables[displayItem].hasStock">Add to Cart</span>
+            <span v-else>Sold out</span> 
+          </button>
         </div>
-
-        <ul v-for="material in materials">
-          <li class="text-sm">{{ material }}</li>
-        </ul>
-
-      </div>  
-
-      <div class="cart-button">
-        <button class="bg-blue-500 hover:bg-blue-700
-                      text-white font-bold
-                      py-2 px-4
-                      rounded-full
-                      self-end"
-                @click="addToCart"
-                :disabled="!variables[displayItem].hasStock"
-                :class="{'button--disabled': !variables[displayItem].hasStock}"
-        >
-          <span v-if="variables[displayItem].hasStock">Add to Cart</span>
-          <span v-else>Sold out</span> 
-        </button>
       </div>
     </div>
-    
+
+    <product-review></product-review>
   </div>
   `,
   data() {
@@ -80,6 +84,31 @@ Vue.component("product", {
   },
 });
 
+// ------------------- Product Review --------------------
+Vue.component("product-review", {
+  template: `
+    <div class="w-full h-full
+                border-t mt-8 p-4
+    ">
+      <ul v-for="review in reviews">
+        <li>{{ review.rating }} <i class="fas fa-star"></i> {{ review.review }} ({{ review.name }})</{{></li>
+      </ul>
+    </div>
+  `,
+  data() {
+    return {
+      reviews: [
+        {
+          name: "TK",
+          review: "This is a sample review",
+          rating: 5,
+        },
+      ],
+    };
+  },
+});
+
+// ------------------- Cart--------------------
 Vue.component("cart", {
   props: {
     cart: {
