@@ -17,10 +17,13 @@
     ></script>
   </head>
   <body>
+    <div class="nav-bar w-screen h-16 bg-green-800"></div>
+
     <div id="app" class="container mx-auto flex p-4 justify-between">
       <product @add-to-cart="updateCart"></product>
       <cart :cart="cart"></cart>
     </div>
+
     <!-- Vue.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="main.js"></script>
